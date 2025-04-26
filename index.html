@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Love Portal</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #fff5f5;
+            background-image: radial-gradient(#ffdddd 1px, transparent 1px);
+            background-size: 20px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .main-container {
+            max-width: 800px;
+            width: 100%;
+            text-align: center;
+        }
+
+        .logo {
+            margin-bottom: 20px;
+            color: #e91e63;
+            font-size: 2.5rem;
+            font-weight: bold;
+        }
+
+        .heart-icon {
+            color: #e91e63;
+            font-size: 1.5rem;
+        }
+
+        .tagline {
+            color: #e91e63;
+            margin-bottom: 30px;
+            line-height: 1.5;
+        }
+
+        .form-container {
+            background: white;
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            position: relative;
+            max-width: 450px;
+            margin: 0 auto;
+        }
+
+        .heart-corner {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            color: #e91e63;
+            font-size: 1.2rem;
+        }
+
+        h2 {
+            color: #9c27b0;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #e91e63;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 10px;
+            background-color: #f0f7ff;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        .date-selects {
+            display: flex;
+            gap: 10px;
+        }
+
+        .date-selects select {
+            flex: 1;
+        }
+
+        button {
+            background-color: #e91e63;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 12px;
+            width: 100%;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #d81b60;
+        }
+
+        .footer {
+            margin-top: 30px;
+            color: #e91e63;
+            font-size: 0.9rem;
+        }
+
+        .heart-sm {
+            font-size: 0.9rem;
+        }
+
+        /* Second page styles */
+        .hint {
+            color: #e91e63;
+            font-style: italic;
+            margin-top: 10px;
+            font-size: 0.9rem;
+        }
+
+        .secret-input {
+            margin-top: 20px;
+        }
+
+        /* Birthday card styles */
+        .birthday-card {
+            display: none;
+            background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 100%);
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            max-width: 500px;
+            margin: 40px auto;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .birthday-card h2 {
+            color: #fff;
+            font-size: 2.5rem;
+            margin-bottom: 30px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            font-weight: bold;
+        }
+
+        .birthday-card p {
+            color: #fff;
+            font-size: 1.3rem;
+            line-height: 1.7;
+            margin-bottom: 20px;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+            font-weight: 500;
+        }
+
+        .birthday-card .signature {
+            font-size: 1.5rem;
+            margin-top: 30px;
+            color: #fff;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+        }
+
+        .birthday-card .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background-color: #ffeb3b;
+            border-radius: 50%;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        /* Error message styles */
+        .error-message {
+            color: #f44336;
+            font-size: 0.9rem;
+            margin-top: 5px;
+            display: none;
+        }
+
+        /* Modal styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 100;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            max-width: 400px;
+            width: 90%;
+            text-align: center;
+            position: relative;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .modal h3 {
+            color: #e91e63;
+            margin-bottom: 15px;
+        }
+
+        .close-btn {
+            background-color: #9c27b0;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 20px;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="main-container">
+        <!-- First Page - Sign Up Form -->
+        <div id="signup-page">
+            <h1 class="logo">❤ Love Portal ❤</h1>
+            <p class="tagline">A special place where love and memories come together.<br>Sign up to experience the magic.</p>
+            
+            <div class="form-container">
+                <div class="heart-corner">❤</div>
+                <h2>Sign up</h2>
+                
+                <form id="signup-form">
+                    <div class="form-group">
+                        <label for="name">Name</label>
+                        <input type="text" id="name" placeholder="Enter your name" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" placeholder="Enter your email" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Date of Birth</label>
+                        <div class="date-selects">
+                            <select id="day" required>
+                                <option value="" disabled selected>Day</option>
+                                <!-- Days will be populated by JavaScript -->
+                            </select>
+                            
+                            <select id="month" required>
+                                <option value="" disabled selected>Month</option>
+                                <!-- Months will be populated by JavaScript -->
+                            </select>
+                            
+                            <select id="year" required>
+                                <option value="" disabled selected>Year</option>
+                                <!-- Years will be populated by JavaScript -->
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="age">Age</label>
+                        <input type="number" id="age" placeholder="Enter your age" required min="1" max="120">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="gender">Gender</label>
+                        <select id="gender" required>
+                            <option value="" disabled selected>Select your gender</option>
+                            <option value="male">Male</option>
+                            <option value="female">Female</option>
+                            <option value="other">Other</option>
+                            <option value="prefer-not-to-say">Prefer not to say</option>
+                        </select>
+                    </div>
+                    
+                    <button type="submit">Sign up</button>
+                </form>
+            </div>
+        </div>
+        
+        <!-- Second Page - Secret Code -->
+        <div id="secret-page" class="hidden">
+            <h1 class="logo">❤ Love Portal ❤</h1>
+            <p class="tagline">A special place where love and memories come together.<br>Sign up to experience the magic.</p>
+            
+            <div class="form-container">
+                <div class="heart-corner">❤</div>
+                <h2>One more step...</h2>
+                
+                <p>Enter the date that holds our special memory ❤</p>
+                
+                <div class="form-group secret-input">
+                    <label for="secret-code">Special Date</label>
+                    <input type="password" id="secret-code" placeholder="•••••••">
+                    <p class="hint">Hint: The day I asked you to be mine ❤</p>
+                    <p id="secret-error" class="error-message">That's not our special date. Please try again.</p>
+                </div>
+                
+                <button id="unlock-btn">Unlock Your Message</button>
+            </div>
+        </div>
+        
+        <!-- Birthday Card -->
+        <div id="birthday-card" class="birthday-card hidden">
+            <h2>✨ Happy Birthday Bristi! ✨</h2>
+            <p>On this special day, I want to celebrate you and all the joy you bring to this world.</p>
+            <p>May your day be filled with love, laughter, and beautiful memories!</p>
+            <p>You deserve all the happiness and success that life has to offer.</p>
+            <p>Wishing you a year ahead full of wonderful surprises and achievements.</p>
+            <p class="signature">❤ With love ❤</p>
+        </div>
+        
+        <div class="footer">
+            <span id="footer-text">Made with</span> <span class="heart-sm">❤</span> just for you
+        </div>
+    </div>
+    
+    <!-- Success Modal -->
+    <div id="success-modal" class="modal">
+        <div class="modal-content">
+            <h3>Thank You!</h3>
+            <p>Your registration was successful.</p>
+            <p>Thanks for joining the Love Portal!</p>
+            <button class="close-btn" id="modal-close">Close</button>
+        </div>
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Populate date dropdowns
+            const daySelect = document.getElementById('day');
+            const monthSelect = document.getElementById('month');
+            const yearSelect = document.getElementById('year');
+            
+            // Add days
+            for (let i = 1; i <= 31; i++) {
+                const option = document.createElement('option');
+                option.value = i < 10 ? '0' + i : i.toString();
+                option.textContent = i;
+                daySelect.appendChild(option);
+            }
+            
+            // Add months
+            const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+            months.forEach((month, index) => {
+                const option = document.createElement('option');
+                option.value = (index + 1) < 10 ? '0' + (index + 1) : (index + 1).toString();
+                option.textContent = month;
+                monthSelect.appendChild(option);
+            });
+            
+            // Add years
+            const currentYear = new Date().getFullYear();
+            for (let i = currentYear; i >= currentYear - 100; i--) {
+                const option = document.createElement('option');
+                option.value = i.toString();
+                option.textContent = i;
+                yearSelect.appendChild(option);
+            }
+            
+            // Form submission
+            const signupForm = document.getElementById('signup-form');
+            signupForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const name = document.getElementById('name').value;
+                const email = document.getElementById('email').value;
+                const day = document.getElementById('day').value;
+                const month = document.getElementById('month').value;
+                const year = document.getElementById('year').value;
+                
+                // Check if the inputs match Bristi's info
+                if (name === 'Bristi Santra' && 
+                    email === 'bristisantra052006@gmail.com' && 
+                    day === '12' && 
+                    month === '05' && 
+                    year === '2006') {
+                    // Navigate to secret page
+                    document.getElementById('signup-page').classList.add('hidden');
+                    document.getElementById('secret-page').classList.remove('hidden');
+                } else {
+                    // Show success modal for regular users
+                    document.getElementById('success-modal').style.display = 'flex';
+                }
+            });
+            
+            // Unlock button
+            document.getElementById('unlock-btn').addEventListener('click', function() {
+                const secretCode = document.getElementById('secret-code').value;
+                const secretError = document.getElementById('secret-error');
+                
+                // Check if the secret code is correct
+                if (secretCode === '15102024') {
+                    secretError.style.display = 'none';
+                    document.getElementById('secret-page').classList.add('hidden');
+                    
+                    // Show birthday card with animation
+                    const birthdayCard = document.getElementById('birthday-card');
+                    birthdayCard.classList.remove('hidden');
+                    birthdayCard.style.display = 'block';
+                    
+                    // Add confetti effect
+                    for (let i = 0; i < 50; i++) {
+                        createConfetti(birthdayCard);
+                    }
+                } else {
+                    // Show error message
+                    secretError.style.display = 'block';
+                }
+            });
+            
+            // Close modal
+            document.getElementById('modal-close').addEventListener('click', function() {
+                document.getElementById('success-modal').style.display = 'none';
+            });
+            
+            // Function to create confetti
+            function createConfetti(parent) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                
+                // Random position and color
+                const colors = ['#ff9a9e', '#fad0c4', '#ffecd2', '#fcb69f', '#ffb6b9', '#fae3d9', '#a18cd1', '#fbc2eb', '#8fd3f4', '#84fab0'];
+                confetti.style.left = Math.random() * 100 + '%';
+                confetti.style.top = -10 + 'px';
+                confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                confetti.style.transform = 'rotate(' + (Math.random() * 360) + 'deg)';
+                
+                parent.appendChild(confetti);
+                
+                // Animation
+                let posY = -10;
+                let posX = parseFloat(confetti.style.left);
+                let speed = 1 + Math.random() * 3;
+                let opacity = 1;
+                
+                const frame = function() {
+                    posY += speed;
+                    posX += (Math.random() - 0.5) * 2;
+                    opacity -= 0.01;
+                    
+                    confetti.style.top = posY + 'px';
+                    confetti.style.left = posX + '%';
+                    confetti.style.opacity = opacity;
+                    
+                    if (posY < parent.offsetHeight && opacity > 0) {
+                        requestAnimationFrame(frame);
+                    } else {
+                        confetti.remove();
+                    }
+                };
+                
+                requestAnimationFrame(frame);
+            }
+        });
+    </script>
+</body>
+</html>
